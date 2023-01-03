@@ -95,9 +95,9 @@ class ObatController extends Controller
      * @param  \App\Obat  $obat
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Obat $obat)
+    public function update(Request $request, $id)
     {
-        $obat = Obat::find($obat);
+        $obat = Obat::where('id',$id)->first();
         $obat->nama_obat=$request->get('nama_obat');
         $obat->formula=$request->get('formula');
         $obat->restriction_formula=$request->get('restriction_formula');
@@ -105,19 +105,9 @@ class ObatController extends Controller
         $obat->faskes_tk1 = !empty($request->get('faskes_tk1'))  ? 1 : 0; 
         $obat->faskes_tk2 = !empty($request->get('faskes_tk2'))  ? 1 : 0; 
         $obat->faskes_tk3 = !empty($request->get('faskes_tk3'))  ? 1 : 0; 
-        $obat->harga=$request->get('harga');
-        // $obat->gambar="Fentanil.jpg";
-        // $obat->gambar=$request->get('gambar');
 
-        $file = $request->file('gambar');
-        $img_folder = 'images';
-        $img_file = $file->getClientOriginalName();
-        $file->move($img_folder, $img_file);
-
-        $obat->gambar =$img_file;
-
-        $obat->kategori_id=$request->get('kategori_id');
-        $obat->supplier_id=$request->get('supplier_id');
+        $obat->kategori_id=$request->get('rdoKategori');
+        $obat->supplier_id=$request->get('rdoSupplier');
 
         $obat->save();
         return redirect()->route('obat.index')->with('status','Obat berhasil diupdate');
@@ -174,5 +164,17 @@ class ObatController extends Controller
         unset($cart[$id]);
         session()->put("cart", $cart);
         return redirect()->back()->with("status","Obat berhasil dihapus dari keranjang");
+    }
+
+    public function getEditForm(Request $request){
+        $id=$request->get('id');
+        $data= Obat::find($id);
+        $kategori = Kategori::all();
+        $supplier = Supplier::all();
+        // dd($data);
+        return response()->json(array(
+            'status'=>'oke',
+            'msg'=>view('obat.getEditForm',compact('data','kategori','supplier'))->render()
+        ),200);
     }
 }

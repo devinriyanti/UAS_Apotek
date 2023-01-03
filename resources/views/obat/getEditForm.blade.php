@@ -18,23 +18,23 @@
 			<div class="form-body">
 				<div class="form-group">
 					<label for="exampleInputEmail1">Nama Obat</label>
-					<input type="text" class="form-control" id="eName" placeholder="Enter text" name="txtObat" value="{{$data->nama_obat}}">
+					<input type="text" class="form-control" id="eName" placeholder="Enter text" name="nama_obat" value="{{$data->nama_obat}}">
 					<span class="help-block">
 					A block of help text. </span>
 				</div>
 				<div class="form-group">
 					<label>Deskripsi</label>
-					<textarea class="form-control" rows="3" id="eDescription" name="txtDeskripsi">{{$data->deskripsi}}</textarea>
+					<textarea class="form-control" rows="3" id="eDescription" name="deskripsi">{{$data->deskripsi}}</textarea>
 				</div>
 				<div class="form-group">
 					<label for="exampleInputEmail1">Formula</label>
-					<input type="text" class="form-control" id="eFormula" placeholder="Enter text" name="txtFormula" value="{{$data->formula}}">
+					<input type="text" class="form-control" id="eFormula" placeholder="Enter text" name="formula" value="{{$data->formula}}">
 					<span class="help-block">
 					A block of help text. </span>
 				</div>
 				<div class="form-group">
 					<label for="exampleInputEmail1">Batasan Formula</label>
-					<input type="text" class="form-control" id="eFormBatasan" placeholder="Enter text" name="txtBatasan" value="{{$data->restriction_formula}}">
+					<input type="text" class="form-control" id="eFormBatasan" placeholder="Enter text" name="restriction_formula" value="{{$data->restriction_formula}}">
 					<span class="help-block">
 					A block of help text. </span>
 				</div>
@@ -45,13 +45,6 @@
 						<label><input type="checkbox" name="cbFaskes2" id="faskes_tk2" {{ ($data->faskes_tk2 == 1) ? 'checked' : ''}}> Tingkat 2</label>
 						<label><input type="checkbox" name="cbFaskes3" id="faskes_tk3" {{ ($data->faskes_tk3 == 1) ? 'checked' : ''}}> Tingkat 3</label>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="exampleInputFile1">Foto Obat</label>
-					<input type="file" id="exampleInputFile1">
-					<p class="help-block">
-						some help text here.
-					</p>
 				</div>
 				<div class="form-group">
 					<label>Kategori Obat</label>

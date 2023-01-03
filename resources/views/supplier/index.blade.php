@@ -1,11 +1,6 @@
 @extends('layouts.conquer')
-<<<<<<< HEAD
 @section('judul_halaman')
     Master Categories
-=======
-@section('title')
-Supplier
->>>>>>> 059f013211be6a5804d46b49cd8a4cbadb4dd967
 @endsection
 @section('content')
 
