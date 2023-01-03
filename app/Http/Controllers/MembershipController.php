@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Membership;
+use App\Models\Membership;
 use Illuminate\Http\Request;
 
 class MembershipController extends Controller
@@ -14,7 +14,12 @@ class MembershipController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $membership = Membership::where('id','>',$user->membership_id)->orderby('id')->first();
+        $poinuser = $user->poin;
+        $targetpoin = $membership->batas_poin;
+        return view('membership.index', ['poinuser' => $poinuser, 'targetpoin' => $targetpoin]);
+
     }
 
     /**

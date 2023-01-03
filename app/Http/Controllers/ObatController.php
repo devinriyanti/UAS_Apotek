@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Kategori;
-use App\Obat;
-use App\Supplier;
+use App\Models\Kategori;
+use App\Models\Obat;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

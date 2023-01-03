@@ -7,6 +7,7 @@ use App\User;
 use App\Transaksi;
 use App\TransaksiObat;
 use App\Obat;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,10 +18,12 @@ class LaporanController extends Controller
         $sampaiTgl = $request->input('sampaiTgl');
         // dd($dariTgl);
         
-        $query = DB::table('transaksi')->select()
-        ->where('tanggal_transaksi', '>=',$dariTgl)
-        ->where('tanggal_transaksi', '<=',$sampaiTgl)
-        ->get();
+        // $query = DB::table('transaksi')->select()
+        // ->where('tanggal_transaksi', '>=', Carbon::now()->toDatetimeString())
+        // ->orWhere('tanggal_transaksi','>=', $dariTgl)
+        // ->where('tanggal_transaksi', '<=', Carbon::now()->toDatetimeString())
+        // ->orWhere('tanggal_transaksi','>=', $sampaiTgl)
+        // ->get();
         // dd($query);
 
         $laporan = DB::table('users')
@@ -30,15 +33,6 @@ class LaporanController extends Controller
         ->join('obat','transaksi_obat.obat_id','obat.id')
         ->get();
         // dd($laporan);
-        return view('laporan.rekapbulanan',compact('laporan'));
+        return view('laporan.rekapbulanan',compact('query','laporan'));
     }
-
-    // public function laporan(){
-    //     $user = User::all();
-    //     // dd($user);
-    //     $transaksi = Transaksi::all();
-    //     $transaksi_obat = TransaksiObat::all();
-    //     $obat = Obat::all();
-    //     return view('laporan.rekapbulanan',compact('user','transaksi','transaksi_obat','obat'));
-    // }
 }
