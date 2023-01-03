@@ -47,13 +47,6 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="exampleInputFile1">Foto Obat</label>
-					<input type="file" id="exampleInputFile1">
-					<p class="help-block">
-						some help text here.
-					</p>
-				</div>
-				<div class="form-group">
 					<label>Kategori Obat</label>
 					<select class="form-control" name="rdoKategori">
 						@foreach($kategori as $k)

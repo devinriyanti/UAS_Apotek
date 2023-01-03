@@ -106,15 +106,6 @@ class ObatController extends Controller
         $obat->faskes_tk2 = !empty($request->get('faskes_tk2'))  ? 1 : 0; 
         $obat->faskes_tk3 = !empty($request->get('faskes_tk3'))  ? 1 : 0; 
         $obat->harga=$request->get('harga');
-        // $obat->gambar="Fentanil.jpg";
-        // $obat->gambar=$request->get('gambar');
-
-        $file = $request->file('gambar');
-        $img_folder = 'images';
-        $img_file = $file->getClientOriginalName();
-        $file->move($img_folder, $img_file);
-
-        $obat->gambar =$img_file;
 
         $obat->kategori_id=$request->get('kategori_id');
         $obat->supplier_id=$request->get('supplier_id');
@@ -174,5 +165,17 @@ class ObatController extends Controller
         unset($cart[$id]);
         session()->put("cart", $cart);
         return redirect()->back()->with("status","Obat berhasil dihapus dari keranjang");
+    }
+
+    public function getEditForm(Request $request){
+        $id=$request->get('id');
+        $data= Obat::find($id);
+        $kategori = Kategori::all();
+        $supplier = Supplier::all();
+        // dd($data);
+        return response()->json(array(
+            'status'=>'oke',
+            'msg'=>view('obat.getEditForm',compact('data','kategori','supplier'))->render()
+        ),200);
     }
 }
