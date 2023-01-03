@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -15,11 +16,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 </head>
+
 <body>
 
-<div class="container">
+    <div class="container">
 
-<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -38,102 +40,101 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        </li>
+                        @if (Route::has('register'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                        </li>
+                        @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->name }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
                         @endguest
                     </ul>
                 </div>
             </div>
         </nav>
-    <div class="row">
-        <div class="col-lg-12 col-sm-12 col-12 main-section">
-            @php
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-12 main-section">
+                @php
                 $total = 0;
                 $qty_barang = 0;
                 if(session('cart')){
-                    foreach(session('cart') as $id => $details){
-                        $total += $details['price'] * $details['quantity'];
-                        $qty_barang++;
-                    }
+                foreach(session('cart') as $id => $details){
+                $total += $details['price'] * $details['quantity'];
+                $qty_barang++;
+                }
                 }
                 $i = 0;
-            @endphp
-            <div class="dropdown">
-                <button type="button" class="btn btn-info" data-toggle="dropdown">
-                    <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart <span class="badge badge-pill badge-danger">{{$qty_barang}}</span>
-                </button>
-                <div class="dropdown-menu">
-                    <div class="row total-header-section">
-                        <div class="col-lg-6 col-sm-6 col-6">
-                            <i class="fa fa-shopping-cart" aria-hidden="true"></i> <span class="badge badge-pill badge-danger">{{$qty_barang}}</span>
+                @endphp
+                <div class="dropdown">
+                    <button type="button" class="btn btn-info" data-toggle="dropdown">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart <span class="badge badge-pill badge-danger">{{$qty_barang}}</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="row total-header-section">
+                            <div class="col-lg-6 col-sm-6 col-6">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i> <span class="badge badge-pill badge-danger">{{$qty_barang}}</span>
+                            </div>
+                            <div class="col-lg-6 col-sm-6 col-6 total-section text-right">
+                                <p>Total: <span class="text-info">Rp. {{ number_format($total,2) }}</span></p>
+                            </div>
                         </div>
-                        <div class="col-lg-6 col-sm-6 col-6 total-section text-right">
-                            <p>Total: <span class="text-info">Rp. {{ number_format($total,2) }}</span></p>
-                        </div>
-                    </div>
-                    @if(session('cart'))
+                        @if(session('cart'))
                         @foreach(session('cart') as $id => $details)
-                            @if($i == 4)
-                                @php
-                                    break;
-                                @endphp
-                            @else
-                                <div class="row cart-detail">
-                                    <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
-                                        <img src="{{ asset(($details['photo']  == '') ? 'images/no_image.png' : 'images/'.$details['photo'] ) }}">
-                                    </div>
-                                    <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                                        <p>{{ $details['name'] }}</p>
-                                        <span class="price text-info"> Rp. {{ number_format($details['price'],2) }}</span> <span class="count">Quantity: {{ $details['quantity'] }}</span>
-                                    </div>
-                                </div>
-                                @php
-                                    $i++;
-                                @endphp
-                            @endif
+                        @if($i == 4)
+                        @php
+                        break;
+                        @endphp
+                        @else
+                        <div class="row cart-detail">
+                            <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
+                                <img src="{{ asset(($details['photo']  == '') ? 'images/no_image.png' : 'images/'.$details['photo'] ) }}">
+                            </div>
+                            <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+                                <p>{{ $details['name'] }}</p>
+                                <span class="price text-info"> Rp. {{ number_format($details['price'],2) }}</span> <span class="count">Quantity: {{ $details['quantity'] }}</span>
+                            </div>
+                        </div>
+                        @php
+                        $i++;
+                        @endphp
+                        @endif
                         @endforeach
-                    @endif
-                    <div class="row">
-                        <div class="col-lg-12 col-sm-12 col-12 text-center checkout">
-                            <a href="{{ url('cart') }}" class="btn btn-primary btn-block">View all</a>
+                        @endif
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-12 text-center checkout">
+                                <a href="{{ url('cart') }}" class="btn btn-primary btn-block">View all</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="container page">
-    @yield('content')
-</div>
+    <div class="container page">
+        @yield('content')
+    </div>
 
 
-@yield('scripts')
+    @yield('scripts')
 
 </body>
+
 </html>

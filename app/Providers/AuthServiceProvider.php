@@ -25,6 +25,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('pegawai-permission','App\Policies\PegawaiPolicy@access');
+        Gate::define('pembeli-permission','App\Policies\PembeliPolicy@access');
+        Gate::define('pemilik-permission','App\Policies\PemilikPolicy@access');
     }
 }
