@@ -1,87 +1,98 @@
 @extends('layouts.conquer')
-@section('title')
-Obat
+@section('judul_halaman')
+    Master Categories
 @endsection
 @section('content')
-<div class="container">
-  @if(session('status'))
-  <div class="alert alert-success">
-    {{session('status')}}
-  </div>
-  @endif
-  @if(session('error'))
-  <div class="alert alert-danger">
-    {{session('error')}}
-  </div>
-  @endif
-  <h2>Daftar Obat</h2>
-  <div class="table">
-    <div>
-      <a href="#modalCreate" data-toggle='modal' class="btn btn-info" type="button">Tambah Obat</a>
-    </div>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nama Obat</th>
-          <th>Formula</th>
-          <th>Restriction Formula</th>
-          <th>Kategori</th>
-          <th>Supplier</th>
-          <th></th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach($data as $d)
-        <tr id='tr_{{$d->id}}'>
-          <td>{{$d->id}}</td>
-          <td id='td_name_{{$d->id}}'>{{$d->nama_obat}}</td>
-          <td id='td_form_{{$d->id}}'>{{$d->formula}}</td>
-          <td id='td_desc_{{$d->id}}'>{{$d->restriction_formula}}</td>
-          <!-- kategori dan supplier harus memunculkan nama, contoh "kategori->nama" -->
-          <td id='td_catg_{{$d->id}}'>{{$d->kategori_id}}</td>
-          <td id='td_catg_{{$d->id}}'>{{$d->supplier_id}}</td>
-          <td> <a class="btn btn-default" data-toggle="modal" href="#detail_{{$d->id}}">Detail</a>
-            <div class="modal fade" id="detail_{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h4 class="modal-title">{{$d->nama_obat}}</h4>
-                  </div>
-                  <div class="modal-body">
-                    <img src="{{asset ('images/'.$d->gambar)}}" height='200px' style="display:block; margin:auto" />
-                    <hr>
-                    <b>Deskripsi</b>
-                    <p>{{$d->deskripsi}}</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  </div>
-                </div>
-              </div>
+
+    <!-- BEGIN Portlet PORTLET-->
+    <div class="page-container">
+          @if(session('status'))
+            <div class="alert alert-success">
+                {{session('status')}}
+            <div>
+            @endif
+
+            @if(session('error'))
+            <div class="alert alert-danger">
+                {{session('error')}}
+            <div>
+            @endif
+      </div>
+
+      <div class="portlet">
+        <div class="portlet-title">
+          <div class="caption">
+            <i class="fa fa-reorder"></i>Master Obat
+          </div>
+            <div class="actions">
+            <a href="#modalCreate" data-toggle='modal' class="btn btn-info" type="button">Tambah Obat</a>
             </div>
-          </td>
-          <!-- <td>
-            <a class='btn btn-info' href="{{route('obat.show',$d->id)}}" data-target="#show{{$d->id}}" data-toggle='modal'>detail</a>
-            <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <img src="assets\img\loading2.gif" alt="" style="display:block; margin:auto">
-                </div>
-              </div>
-            </div>s
-          </td> -->
-          <td>
-            <a href="#modalEdit" data-toggle="modal" class="btn btn-warning btn-xs" onClick="getEditForm({{$d->id}})">EDIT</a>
-            <a class='btn btn-danger btn-xs' onclick="if(confirm('Are you sure you wanna delete this data?')) deleteDataRemoveTR({{$d->id}})">DELETE</a>
-          </td>
-        </tr>
-        @endforeach
-      </tbody>
-    </table>
-  </div>
-</div>
+        </div>
+		<div class="portlet-body">
+            <table id='myTable' class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nama Obat</th>
+                    <th>Formula</th>
+                    <th>Restriction Formula</th>
+                    <th>Kategori</th>
+                    <th>Supplier</th>
+                    <th></th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                @foreach($data as $d)
+                <tr id='tr_{{$d->id}}'>
+                  <td>{{$d->id}}</td>
+                  <td id='td_name_{{$d->id}}'>{{$d->nama_obat}}</td>
+                  <td id='td_form_{{$d->id}}'>{{$d->formula}}</td>
+                  <td id='td_desc_{{$d->id}}'>{{$d->restriction_formula}}</td>
+                  <!-- kategori dan supplier harus memunculkan nama, contoh "kategori->nama" -->
+                  <td id='td_catg_{{$d->id}}'>{{$d->kategori_id}}</td>
+                  <td id='td_catg_{{$d->id}}'>{{$d->supplier_id}}</td>
+                  <td> <a class="btn btn-default" data-toggle="modal" href="#detail_{{$d->id}}">Detail</a>
+                    <div class="modal fade" id="detail_{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h4 class="modal-title">{{$d->nama_obat}}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <img src="{{asset ('images/'.$d->gambar)}}" height='200px' style="display:block; margin:auto" />
+                            <hr>
+                            <b>Deskripsi</b>
+                            <p>{{$d->deskripsi}}</p>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <!-- <td>
+                    <a class='btn btn-info' href="{{route('obat.show',$d->id)}}" data-target="#show{{$d->id}}" data-toggle='modal'>detail</a>
+                    <div class="modal fade" id="show{{$d->id}}" tabindex="-1" role="basic" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <img src="assets\img\loading2.gif" alt="" style="display:block; margin:auto">
+                        </div>
+                      </div>
+                    </div>s
+                  </td> -->
+                  <td>
+                    <a href="#modalEdit" data-toggle="modal" class="btn btn-warning btn-xs" onClick="getEditForm({{$d->id}})">EDIT</a>
+                    <a class='btn btn-danger btn-xs' onclick="if(confirm('Are you sure you wanna delete this data?')) deleteDataRemoveTR({{$d->id}})">DELETE</a>
+                  </td>
+                </tr>
+                @endforeach
+                </tbody>
+            </table>         
+          </div>                          
+        </div> 
+	</div>
 @endsection
 
 <!-- add new medicine -->
@@ -173,6 +184,7 @@ Obat
 
 @section('javascript')
 <script>
+  $('#myTable').DataTable();
   function getEditForm(id) {
     $.ajax({
         type: 'POST',

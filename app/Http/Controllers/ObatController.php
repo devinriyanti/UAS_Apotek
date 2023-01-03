@@ -95,9 +95,9 @@ class ObatController extends Controller
      * @param  \App\Obat  $obat
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Obat $obat)
+    public function update(Request $request, $id)
     {
-        $obat = Obat::find($obat);
+        $obat = Obat::where('id',$id)->first();
         $obat->nama_obat=$request->get('nama_obat');
         $obat->formula=$request->get('formula');
         $obat->restriction_formula=$request->get('restriction_formula');
@@ -105,10 +105,9 @@ class ObatController extends Controller
         $obat->faskes_tk1 = !empty($request->get('faskes_tk1'))  ? 1 : 0; 
         $obat->faskes_tk2 = !empty($request->get('faskes_tk2'))  ? 1 : 0; 
         $obat->faskes_tk3 = !empty($request->get('faskes_tk3'))  ? 1 : 0; 
-        $obat->harga=$request->get('harga');
 
-        $obat->kategori_id=$request->get('kategori_id');
-        $obat->supplier_id=$request->get('supplier_id');
+        $obat->kategori_id=$request->get('rdoKategori');
+        $obat->supplier_id=$request->get('rdoSupplier');
 
         $obat->save();
         return redirect()->route('obat.index')->with('status','Obat berhasil diupdate');
