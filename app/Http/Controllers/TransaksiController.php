@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Transaksi;
-use App\User;
+use App\Models\Membership;
+use App\Models\Transaksi;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -102,6 +103,24 @@ class TransaksiController extends Controller
         // dd($total_harga);
         $t->save();
         
+        //UPDATE POINT FOR USER
+        $total_transaksi = Transaksi::where('users_id',$user->id)
+        ->whereYear('tanggal_transaksi',Carbon::now()->format('Y'))
+        ->whereMonth('tanggal_transaksi',Carbon::now()->format('m'))->sum('total'); 
+
+        $poin = Membership::convertPoin($total_transaksi);
+        $user->poin=$poin;
+        $user->save();
+
+        //CONDITIONAL MEMBER
+        $membership = Membership::where('id','>',$user->membership_id)->orderby('id')->first();
+        if(!empty($membership)){
+            if($user->poin >= $membership->batas_poin){
+                $user->membership_id = $membership->id;
+                $user->save();
+            }
+        }
+
         session()->forget('cart');
         return redirect('/');        
     }

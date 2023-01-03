@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\TransaksiObat;
+use App\Models\TransaksiObat;
 use Illuminate\Http\Request;
 
 class TransaksiObatController extends Controller
