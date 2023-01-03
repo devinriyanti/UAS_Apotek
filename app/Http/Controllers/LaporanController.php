@@ -3,83 +3,42 @@
 namespace App\Http\Controllers;
 
 use App\Laporan;
+use App\User;
+use App\Transaksi;
+use App\TransaksiObat;
+use App\Obat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LaporanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function laporan(Request $request){
+        $dariTgl = $request->input('dariTgl');
+        $sampaiTgl = $request->input('sampaiTgl');
+        // dd($dariTgl);
+        
+        $query = DB::table('transaksi')->select()
+        ->where('tanggal_transaksi', '>=',$dariTgl)
+        ->where('tanggal_transaksi', '<=',$sampaiTgl)
+        ->get();
+        // dd($query);
+
+        $laporan = DB::table('users')
+        ->select('users.id','users.name','transaksi.tanggal_transaksi','transaksi_obat.kuantitas','transaksi_obat.harga','obat.nama_obat')
+        ->join('transaksi','users.id','transaksi.users_id')
+        ->join('transaksi_obat','transaksi.id','transaksi_obat.transaksi_id')
+        ->join('obat','transaksi_obat.obat_id','obat.id')
+        ->get();
+        // dd($laporan);
+        return view('laporan.rekapbulanan',compact('laporan'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Laporan  $laporan
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Laporan $laporan)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Laporan  $laporan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Laporan $laporan)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Laporan  $laporan
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Laporan $laporan)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Laporan  $laporan
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Laporan $laporan)
-    {
-        //
-    }
+    // public function laporan(){
+    //     $user = User::all();
+    //     // dd($user);
+    //     $transaksi = Transaksi::all();
+    //     $transaksi_obat = TransaksiObat::all();
+    //     $obat = Obat::all();
+    //     return view('laporan.rekapbulanan',compact('user','transaksi','transaksi_obat','obat'));
+    // }
 }

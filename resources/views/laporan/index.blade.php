@@ -25,7 +25,9 @@
 		    <div class="actions">
 		    </div>
 	    </div>
+        
 		<div class="portlet-body">
+        
             <table class="table table-bordered">
                 <thead>
                     <tr>

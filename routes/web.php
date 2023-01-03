@@ -46,9 +46,9 @@ use Illuminate\Support\Facades\Route;
     Route::Resource('transaksi', TransaksiController::class);
     Route::Resource('laporan', LaporanController::class);
 
-    
-    
     Route::post('/transaksi/showAjax', 'TransaksiController@showAjax')->name('transaksi.showAjax');
+
+    Route::get('rekapbulanan','LaporanController@laporan')->name('report.rekapbulanan');
     
 // Route::middleware(['can:member-permission'])->group(function(){
     Route::get('cart','ObatController@cart');
