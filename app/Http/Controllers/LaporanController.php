@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Laporan;
+use App\Models\Laporan;
 use Illuminate\Http\Request;
 
 class LaporanController extends Controller
