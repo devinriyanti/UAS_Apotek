@@ -64,9 +64,9 @@
                             <label for="roles-row" class="col-md-4 col-form-label text-md-right">Peran</label>
                             <div class="col-md-6">
                                 <select name="roles" id="roles" class="form-control">
-                                    <option value="owner">Pemilik</option>
-                                    <option value="pegawai">Karyawan</option>   
-                                    <option value="member">Member</option> 
+                                    <option value="pemilik">Pemilik</option>
+                                    <option value="pegawai">Pegawai</option>   
+                                    <option value="Pembeli">Pembeli</option> 
                                 </select>
                             </div>
                         </div>
