@@ -16,7 +16,7 @@ Transaksi
     </div>
     @endif
     <h2>Transaksi Pembelian</h2>
-    <table class="table table-bordered">
+    <table id='myTable' class="table table-bordered">
         <thead>
             <tr>
                 <th>ID</th>
@@ -30,7 +30,7 @@ Transaksi
             <tr>
                 <td>{{$ts->id}}</td>
                 <td>{{$ts->user->name}}</td>
-                <td>{{$ts->tanggal_transaksi}}</td>
+                <td>{{date('d-m-Y',strtotime($ts->tanggal_transaksi))}}</td>
                 <td>
                 <a class="btn btn-default" data-toggle="modal" href="#basic" 
                     onclick="getDetailData({{$ts->id}});">Lihat Rincian Pembelian</a>
@@ -59,6 +59,7 @@ Transaksi
 @endsection
 @section('javascript')
 <script>
+    $('#myTable').DataTable();
     function getDetailData(id){
         $.ajax({
             type:'POST',

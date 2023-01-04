@@ -47,6 +47,7 @@ Route::middleware(['can:pegawai-permission'])->group(function () {
     Route::post('/supplier/saveData', 'SupplierController@saveData')->name('supplier.saveData');
     Route::post('/supplier/saveDataField', 'SupplierController@saveDataField')->name('supplier.saveDataField');
     Route::post('/supplier/deleteData', 'SupplierController@deleteData')->name('supplier.deleteData');
+});
 
 Route::middleware(['can:pemilik-permission'])->group(function () {
     Route::Resource('laporan', LaporanController::class);

@@ -17,7 +17,7 @@
             <div>
             @endif
       </div>
-        <form action="{{route('rekapbulanan')}}" method="post">
+        <form method="post">
             @csrf
             <br>
             <div class="container">
@@ -26,14 +26,11 @@
                         <div class="form-group row">
                             <label for="date" class="col-form-label col-sm-2">Dari Tanggal</label>
                             <div class="col-sm-3">
-                                <input type="date" class="form-control input-sm" id="dariTgl" name="dariTgl" required/>
+                                <input type="date" class="form-control input-sm" id="date_range_filter_min" name="dariTgl" required/>
                             </div>
                             <label for="date" class="col-form-label col-sm-2">Sampai Tanggal</label>
                             <div class="col-sm-3">
-                                <input type="date" class="form-control input-sm" id="sampaiTgl" name="sampaiTgl" required/>
-                            </div>
-                            <div class="col-sm-2">
-                                <button type="submit" class="btn" name="search" title="Search">Cari</button>
+                                <input type="date" class="form-control input-sm" id="date_range_filter_max" name="sampaiTgl" required/>
                             </div>
                         </div>
                     </div>
@@ -50,7 +47,7 @@
 	    </div>
         
 		<div class="portlet-body">
-            <table class="table table-bordered">
+            <table id='myTable' class="table table-bordered">
                 <thead>
                     <tr>
                         <th>Nama Pembeli</th>
@@ -75,4 +72,26 @@
           </div>                          
         </div> 
 	</div>
+@endsection
+@section('javascript')
+<script>
+    var table = $('#myTable').DataTable();
+    $('#date_range_filter_min, #date_range_filter_max').on('change', function () {
+        $.fn.dataTable.ext.search.pop();
+        if($('#date_range_filter_min').val()!='' && $('#date_range_filter_max').val()!='' ){
+            $.fn.dataTable.ext.search.push(
+            function( settings, data, dataIndex ) {
+                min = new Date($('#date_range_filter_min').val());
+                max = new Date( $('#date_range_filter_max').val());
+                
+            var date = new Date(data[1]);
+            if ( ( min === null && max === null ) || ( min === null && date <= max ) || ( min <= date   && max === null ) || (min <= date && date <= max) ) {
+                return true;
+            }
+                return false;
+            });
+        }
+        table.draw();
+    });
+</script>
 @endsection

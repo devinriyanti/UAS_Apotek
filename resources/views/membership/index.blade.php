@@ -26,12 +26,12 @@
 		    </div>
 	    </div>
 		<div class="portlet-body">
-            <table class="table table-bordered">
+            <table id='myTable' class="table table-bordered">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Nama Pembeli</th>
-                        <th>Alamat</th>
+                        <th>Email</th>
                         <th>Poin</th>
                         <th>Member</th>
                         <th>Aksi</th>
@@ -41,17 +41,30 @@
                     @foreach($data as $d)
                     <tr>
                         <td>{{$d->id}}</td>
-                        <td>{{$d->nama}}</td>
-                        <td>{{$d->alamat}}</td>
+                        <td>{{$d->name}}</td>
+                        <td>{{$d->email}}</td>
                         <td>{{$d->poin}}</td>
-                        <td>{{$d->membership->jenis_membership}}</td>
+                        <td>{{$d->membership->jenis}}</td>
                         <td>
+                        <!-- SETTING PROGRESS BAR -->
+                        <!-- {{$d->poin}} -->
+                        @php
+                        $batas_poin= $d->membership->jenis == "SILVER" ? 100:150 ;
+                            if($d->membership->jenis == "SILVER"){
+                                $batas_poin= 99;
+                            } 
+                            elseif($d->membership->jenis == "GOLD"){
+                                $batas_poin= 149;
+                            }                             
+                            $percenant= ceil(($d->poin/$batas_poin) *100);
+                        @endphp
                         <div class="progress">
-                            <div class="progress-bar progress-bar-striped active" role="progressbar"
-                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:70%">
-                                70%
-                            </div>
+                            <div class="progress-bar" role="progressbar" style="width: {{$percenant}}%;" 
+                                aria-valuenow="{{$percenant}}" aria-valuemin="0" aria-valuemax="100">{{$percenant}}%</div>
                         </div>
+                        <!-- @if($d->membership->jenis == "SILVER") 100
+                        @elseif($d->membership->jenis == "GOLD") 150
+                        @endif -->
                         </td>
                     </tr>
                     @endforeach
@@ -60,4 +73,10 @@
           </div>                          
         </div> 
 	</div>
+@endsection
+
+@section('javascript')
+<script>
+    $('#myTable').DataTable();
+</script>
 @endsection

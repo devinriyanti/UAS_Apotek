@@ -148,14 +148,14 @@ License: You must have a valid license purchased only from themeforest(the above
 					<li>
 						<a href="javascript:;">
 							<i class=" icon-folder"></i>
-							<span class="title">Pembeli</span>
+							<span class="title">Master Transaksi</span>
 							<span class="arrow "></span>
 						</a>
 						<ul class="sub-menu">
 							<li>
 								<a href="{{ url('transaksi') }}">
 									<i class="fa fa-group"></i>
-									<span class="title">Data Pembeli</span>
+									<span class="title">Transaksi Pembelian</span>
 								</a>
 							</li>
 						</ul>
@@ -163,15 +163,15 @@ License: You must have a valid license purchased only from themeforest(the above
 					<li>
 						<a href="javascript:;">
 							<i class=" icon-folder"></i>
-							<span class="title">Report</span>
+							<span class="title">Laporan</span>
 							<span class="arrow "></span>
 						</a>
 						<ul class="sub-menu">
 							<li>
-								<a href="">Laporan Transaksi Bulanan</a>
+								<a href="{{url('/rekapbulanan')}}">Laporan Transaksi Pembelian</a>
 							</li>
 							<li>
-								<a href="">Laporan Poin Membership</a>
+								<a href="{{route('membership.index')}}">Laporan Poin Membership</a>
 							</li>
 						</ul>
 					</li>

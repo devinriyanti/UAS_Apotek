@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Membership;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class MembershipController extends Controller
 {
@@ -14,12 +17,16 @@ class MembershipController extends Controller
      */
     public function index()
     {
+        $data = User::where('sebagai','=','pembeli')->get();
+        // dd($data);
         $user = Auth::user();
-        $membership = Membership::where('id','>',$user->membership_id)->orderby('id')->first();
-        $poinuser = $user->poin;
-        $targetpoin = $membership->batas_poin;
-        return view('membership.index', ['poinuser' => $poinuser, 'targetpoin' => $targetpoin]);
-
+        // dd($user);
+        // $membership = Membership::where('id','>',$user->membership_id)->orderby('id')->first();
+        // dd($membership);
+        // $poinuser = $user->poin;
+        // $targetpoin = $membership->batas_poin;
+        // $selisihpoin = $targetpoin-$poinuser;
+        return view('membership.index', ['data'=> $data]);
     }
 
     /**
