@@ -18,14 +18,7 @@ class MembershipController extends Controller
     public function index()
     {
         $data = User::where('sebagai','=','pembeli')->get();
-        // dd($data);
         $user = Auth::user();
-        // dd($user);
-        // $membership = Membership::where('id','>',$user->membership_id)->orderby('id')->first();
-        // dd($membership);
-        // $poinuser = $user->poin;
-        // $targetpoin = $membership->batas_poin;
-        // $selisihpoin = $targetpoin-$poinuser;
         return view('membership.index', ['data'=> $data]);
     }
 
