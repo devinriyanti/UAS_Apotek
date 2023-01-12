@@ -36,5 +36,6 @@ class Kategori extends Model
 	public function obats()
 	{
 		return $this->hasMany(Obat::class);
+		Kategori::withCount('obats')->get();
 	}
 }

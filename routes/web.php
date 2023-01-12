@@ -34,6 +34,7 @@ Route::middleware(['can:pegawai-permission'])->group(function () {
     Route::resource('transaksi', 'TransaksiController');
     Route::post('/obat/getEditForm', 'ObatController@getEditForm')->name('obat.getEditForm');
     Route::post('/obat/saveData', 'ObatController@saveData')->name('obat.saveData');
+    Route::post('/transaksi/showAjax', 'TransaksiController@showAjax')->name('transaksi.showAjax');
     Route::post('/obat/deleteData', 'ObatController@deleteData')->name('obat.deleteData');
 
     Route::resource('kategori', 'KategoriController');
@@ -52,7 +53,6 @@ Route::middleware(['can:pegawai-permission'])->group(function () {
 Route::middleware(['can:pemilik-permission'])->group(function () {
     Route::Resource('laporan', LaporanController::class);
     Route::Resource('membership', MembershipController::class);
-    Route::post('/transaksi/showAjax', 'TransaksiController@showAjax')->name('transaksi.showAjax');
     Route::get('rekapbulanan','LaporanController@laporan')->name('rekapbulanan');
 });
 

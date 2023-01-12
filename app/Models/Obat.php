@@ -80,4 +80,8 @@ class Obat extends Model
 					->withPivot('kuantitas', 'harga')
 					->withTimestamps();
 	}
+
+	public function catgCount(){
+        return $this->kategori('obat','')->selectedRaw('kategori_id, count(distinct kategori_id as total)')->groupBy('kategori_id');
+    }
 }

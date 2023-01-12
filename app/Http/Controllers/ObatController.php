@@ -17,10 +17,17 @@ class ObatController extends Controller
      */
     public function index()
     {
-        $list_data = DB::table('obat')->get();
-        $kategori =Kategori::all();
-        $supplier =Supplier::all();
-        return view('obat.index',['data'=>$list_data,'kategori'=>$kategori,'supplier'=>$supplier]);
+        $list_data = Obat::all();
+        $kategori = Kategori::all();
+        $katTeratas = DB::select(DB::raw('SELECT k.id FROM obat o INNER JOIN kategori k ON o.kategori_id = k.id GROUP BY k.id ORDER BY (COUNT(k.name)) desc limit 2'));
+        // dd($katTeratas);
+        foreach ($katTeratas as $k) {
+            $jumlah[$k->id] = Obat::where('kategori_id', $k->id)->count();
+            // dd($jumlah);
+        }
+
+        $supplier = Supplier::all();
+        return view('obat.index', ['data' => $list_data, 'kategori' => $kategori, 'supplier' => $supplier, 'jumlah' => $jumlah]);
     }
 
     /**
@@ -30,9 +37,9 @@ class ObatController extends Controller
      */
     public function create()
     {
-        $supplier =Supplier::all();
-        $kategori =Kategori::all();
-        return view('obat.create' , compact('supplier','kategori'));
+        $supplier = Supplier::all();
+        $kategori = Kategori::all();
+        return view('obat.create', compact('supplier', 'kategori'));
     }
 
     /**
@@ -43,27 +50,27 @@ class ObatController extends Controller
      */
     public function store(Request $request)
     {
-        $obat= new Obat();
-        $obat->nama_obat=$request->get('nama_obat');
-        $obat->formula=$request->get('formula');
-        $obat->restriction_formula=$request->get('restriction_formula');
-        $obat->deskripsi=$request->get('deskripsi');
-        $obat->faskes_tk1 = !empty($request->get('faskes_tk1'))  ? 1 : 0; 
-        $obat->faskes_tk2 = !empty($request->get('faskes_tk2'))  ? 1 : 0; 
-        $obat->faskes_tk3 = !empty($request->get('faskes_tk3'))  ? 1 : 0; 
-        $obat->kategori_id=$request->get('rdoKategori');
-        $obat->supplier_id=$request->get('rdoSupplier');
+        $obat = new Obat();
+        $obat->nama_obat = $request->get('nama_obat');
+        $obat->formula = $request->get('formula');
+        $obat->restriction_formula = $request->get('restriction_formula');
+        $obat->deskripsi = $request->get('deskripsi');
+        $obat->faskes_tk1 = !empty($request->get('faskes_tk1'))  ? 1 : 0;
+        $obat->faskes_tk2 = !empty($request->get('faskes_tk2'))  ? 1 : 0;
+        $obat->faskes_tk3 = !empty($request->get('faskes_tk3'))  ? 1 : 0;
+        $obat->kategori_id = $request->get('rdoKategori');
+        $obat->supplier_id = $request->get('rdoSupplier');
         // dd($request->get('rdoSupplier'));
-        $obat->harga=$request->get('harga');
-        
+        $obat->harga = $request->get('harga');
+
         $file = $request->file('gambar');
         $img_folder = 'images';
         $img_file = $file->getClientOriginalName();
         $file->move($img_folder, $img_file);
 
-        $obat->gambar =$img_file;
+        $obat->gambar = $img_file;
         $obat->save();
-        return redirect()->route('obat.index')->with('status','Obat berhasil ditambahkan');
+        return redirect()->route('obat.index')->with('status', 'Obat berhasil ditambahkan');
     }
 
     /**
@@ -97,20 +104,20 @@ class ObatController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $obat = Obat::where('id',$id)->first();
-        $obat->nama_obat=$request->get('nama_obat');
-        $obat->formula=$request->get('formula');
-        $obat->restriction_formula=$request->get('restriction_formula');
-        $obat->deskripsi=$request->get('deskripsi');
-        $obat->faskes_tk1 = !empty($request->get('faskes_tk1'))  ? 1 : 0; 
-        $obat->faskes_tk2 = !empty($request->get('faskes_tk2'))  ? 1 : 0; 
-        $obat->faskes_tk3 = !empty($request->get('faskes_tk3'))  ? 1 : 0; 
+        $obat = Obat::where('id', $id)->first();
+        $obat->nama_obat = $request->get('nama_obat');
+        $obat->formula = $request->get('formula');
+        $obat->restriction_formula = $request->get('restriction_formula');
+        $obat->deskripsi = $request->get('deskripsi');
+        $obat->faskes_tk1 = !empty($request->get('faskes_tk1'))  ? 1 : 0;
+        $obat->faskes_tk2 = !empty($request->get('faskes_tk2'))  ? 1 : 0;
+        $obat->faskes_tk3 = !empty($request->get('faskes_tk3'))  ? 1 : 0;
 
-        $obat->kategori_id=$request->get('rdoKategori');
-        $obat->supplier_id=$request->get('rdoSupplier');
+        $obat->kategori_id = $request->get('rdoKategori');
+        $obat->supplier_id = $request->get('rdoSupplier');
 
         $obat->save();
-        return redirect()->route('obat.index')->with('status','Obat berhasil diupdate');
+        return redirect()->route('obat.index')->with('status', 'Obat berhasil diupdate');
     }
 
     /**
@@ -122,39 +129,42 @@ class ObatController extends Controller
     public function destroy(Obat $obat)
     {
         $obat = obat::find($obat);
-        try{
+        try {
             $obat->delete();
-            return redirect()->route('obat.index')->with('status','Obat berhasil dihapus');
-        }catch (\PDOException $e) {
-            $msg="Obat gagal dihapus. Data masih berhubungan dengan fitur lain";
+            return redirect()->route('obat.index')->with('status', 'Obat berhasil dihapus');
+        } catch (\PDOException $e) {
+            $msg = "Obat gagal dihapus. Data masih berhubungan dengan fitur lain";
 
-            return redirect()->route('obat.index')-with('error',$msg);
+            return redirect()->route('obat.index') - with('error', $msg);
         }
     }
 
-    public function front_index(){
+    public function front_index()
+    {
         $obat = Obat::all();
         return view('frontend.product', compact('obat'));
     }
-    
-    public function addToCart($id){
+
+    public function addToCart($id)
+    {
         $o = Obat::find($id);
         $cart = session()->get('cart');
-        if(!isset($cart[$id])){
+        if (!isset($cart[$id])) {
             $cart[$id] = [
-                "name"=>$o->nama_obat,
-                "quantity"=>1,
-                "price"=>$o->harga,
-                "photo"=>$o->gambar
+                "name" => $o->nama_obat,
+                "quantity" => 1,
+                "price" => $o->harga,
+                "photo" => $o->gambar
             ];
-        }else{
+        } else {
             $cart[$id]['quantity']++;
         }
-        session()->put('cart',$cart);
+        session()->put('cart', $cart);
         return redirect()->back()->with('success', "Obat berhasil ditambahkan ke keranjang!");
     }
 
-    public function cart(){
+    public function cart()
+    {
         return view('frontend.cart');
     }
 
@@ -163,18 +173,36 @@ class ObatController extends Controller
         $cart = session()->get("cart");
         unset($cart[$id]);
         session()->put("cart", $cart);
-        return redirect()->back()->with("status","Obat berhasil dihapus dari keranjang");
+        return redirect()->back()->with("status", "Obat berhasil dihapus dari keranjang");
     }
 
-    public function getEditForm(Request $request){
-        $id=$request->get('id');
-        $data= Obat::find($id);
+    public function getEditForm(Request $request)
+    {
+        $id = $request->get('id');
+        $data = Obat::find($id);
         $kategori = Kategori::all();
         $supplier = Supplier::all();
         // dd($data);
         return response()->json(array(
-            'status'=>'oke',
-            'msg'=>view('obat.getEditForm',compact('data','kategori','supplier'))->render()
-        ),200);
+            'status' => 'oke',
+            'msg' => view('obat.getEditForm', compact('data', 'kategori', 'supplier'))->render()
+        ), 200);
+    }
+    public function deleteData(Request $request)
+    {
+        try {
+            $id = $request->get('id');
+            $Obat = Obat::find($id);
+            $Obat->delete();
+            return response()->json(array(
+                'status' => 'ok',
+                'msg' => 'Obat berhasil dihapus'
+            ), 200);
+        } catch (\PDOException $e) {
+            return response()->json(array(
+                'status ' => ' error',
+                'msg' => 'Obat gagal terhapus. Data masih berhubungan dengan fitur lain'
+            ), 200);
+        }
     }
 }
